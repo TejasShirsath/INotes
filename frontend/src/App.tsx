@@ -1,8 +1,9 @@
 import './App.css'
+import Landing from './pages/landing'
 
 function App() {
   return (
-    <h1 className='text-3xl text-red-700 font-bold underline'>Hello</h1>
+    <Landing/>
   )
 }
 
