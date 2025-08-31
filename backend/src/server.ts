@@ -14,8 +14,26 @@ dotenv.config();
 const server = express();
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
+
+// Dynamic CORS configuration
+const allowedOrigins = [
+  'http://localhost:5173', 
+  'http://localhost:3000',
+  process.env.FRONTEND_URL
+].filter(Boolean); // Remove undefined values
+
 server.use(cors({ 
-  origin: ['http://localhost:5173', 'http://localhost:3000'], 
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+    
+    // Check if the origin is in our allowed list or matches Vercel pattern
+    if (allowedOrigins.includes(origin) || origin.includes('.vercel.app')) {
+      return callback(null, true);
+    }
+    
+    return callback(new Error('Not allowed by CORS'));
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
