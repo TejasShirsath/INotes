@@ -7,14 +7,18 @@ import Testimonials from '../components/Testimonials';
 import CTA from '../components/CTA';
 import Footer from '../components/Footer';
 
-const Landing: React.FC = () => {
+interface LandingProps {
+  onLoginClick: () => void;
+}
+
+const Landing: React.FC<LandingProps> = ({ onLoginClick }) => {
   return (
     <div className="min-h-screen">
-      <Header />
-      <Hero />
+      <Header onLoginClick={onLoginClick} />
+      <Hero onLoginClick={onLoginClick} />
       <Features />
       <Testimonials />
-      <CTA />
+      <CTA onLoginClick={onLoginClick} />
       <Footer />
     </div>
   );

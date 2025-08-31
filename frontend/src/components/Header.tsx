@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { Users2 } from "lucide-react";
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  onLoginClick: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ onLoginClick }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -43,7 +47,10 @@ const Header: React.FC = () => {
 
               {/* CTA Buttons */}
               <div className="hidden md:flex items-center space-x-4">
-                <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-xl text-lg font-medium transition-all duration-200 shadow-md hover:shadow-lg flex items-center gap-2">
+                <button 
+                  onClick={onLoginClick}
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-xl text-lg font-medium transition-all duration-200 shadow-md hover:shadow-lg flex items-center gap-2"
+                >
                   <Users2 className="w-4 h-4" />
                   <span>Sign In</span>
                 </button>
@@ -108,10 +115,16 @@ const Header: React.FC = () => {
                 </a>
                 <div className="pt-3 border-t border-gray-200">
                   <div className="flex flex-col space-y-2">
-                    <button className="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium text-left transition-colors duration-200">
+                    <button 
+                      onClick={onLoginClick}
+                      className="text-gray-700 hover:text-indigo-600 px-3 py-2 text-base font-medium text-left transition-colors duration-200"
+                    >
                       Sign In
                     </button>
-                    <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-xl text-base font-medium transition-all duration-200">
+                    <button 
+                      onClick={onLoginClick}
+                      className="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-xl text-base font-medium transition-all duration-200"
+                    >
                       Get Started
                     </button>
                   </div>

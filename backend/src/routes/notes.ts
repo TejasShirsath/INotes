@@ -6,15 +6,15 @@ import {
   deleteNoteById,
   updateNoteById,
 } from '../controllers/notes';
-import protect from '../middlewares/protect';
+import { authenticate } from '../middlewares/universalAuth';
 import validateId from '../middlewares/validateId';
 const router = express.Router();
 
-router.route('/notes').post(protect, createNote).get(protect, getNotes);
+router.route('/notes').post(authenticate, createNote).get(authenticate, getNotes);
 router
   .route('/notes/:id')
-  .get(protect, validateId('id'), getNoteById)
-  .put(protect, validateId('id'), updateNoteById)
-  .delete(protect, validateId('id'), deleteNoteById);
+  .get(authenticate, validateId('id'), getNoteById)
+  .put(authenticate, validateId('id'), updateNoteById)
+  .delete(authenticate, validateId('id'), deleteNoteById);
 
 export default router;

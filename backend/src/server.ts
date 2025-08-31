@@ -7,13 +7,17 @@ import connectDB from './config/db';
 import errorHandler from './middlewares/errorHandler';
 import usersRoutes from './routes/users';
 import notesRoutes from './routes/notes';
+import auth0Routes from './routes/auth0';
 dotenv.config();
 
 /* CONFIGURATION */
 const server = express();
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
-server.use(cors({ origin: '*' }));
+server.use(cors({ 
+  origin: ['http://localhost:5173', 'http://localhost:3000'], // Add frontend URLs
+  credentials: true 
+}));
 server.use(helmet());
 server.use(httpLogger('dev'));
 
@@ -22,6 +26,7 @@ const baseUrl = process.env.BASE_API_URL || '/api';
 server.get(baseUrl, (_, res) => {
   return res.json({ success: true, message: 'The server is up' });
 });
+server.use(baseUrl + '/auth0', auth0Routes);
 server.use(baseUrl, usersRoutes);
 server.use(baseUrl, notesRoutes);
 server.use(errorHandler);

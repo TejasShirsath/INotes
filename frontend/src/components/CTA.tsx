@@ -1,6 +1,10 @@
 import React from 'react';
 
-const CTA: React.FC = () => {
+interface CTAProps {
+  onLoginClick: () => void;
+}
+
+const CTA: React.FC<CTAProps> = ({ onLoginClick }) => {
   return (
     <section className="relative py-20 bg-gradient-to-br from-indigo-600 to-purple-700 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
@@ -17,7 +21,10 @@ const CTA: React.FC = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <button className="bg-white hover:bg-gray-100 text-indigo-600 px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+            <button 
+              onClick={onLoginClick}
+              className="bg-white hover:bg-gray-100 text-indigo-600 px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+            >
               Start Free Today
             </button>
             <button className="border-2 border-white text-white hover:bg-white hover:text-indigo-600 px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200">
