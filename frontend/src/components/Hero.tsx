@@ -35,22 +35,6 @@ const Hero: React.FC<HeroProps> = ({ onLoginClick }) => {
                 Watch Demo
               </button>
             </div>
-
-            {/* Stats */}
-            <div className="mt-12 grid grid-cols-3 gap-8">
-              <div className="text-center lg:text-left">
-                <div className="text-2xl md:text-3xl font-bold text-indigo-600">10K+</div>
-                <div className="text-gray-600">Active Users</div>
-              </div>
-              <div className="text-center lg:text-left">
-                <div className="text-2xl md:text-3xl font-bold text-indigo-600">500K+</div>
-                <div className="text-gray-600">Notes Created</div>
-              </div>
-              <div className="text-center lg:text-left">
-                <div className="text-2xl md:text-3xl font-bold text-indigo-600">99.9%</div>
-                <div className="text-gray-600">Uptime</div>
-              </div>
-            </div>
           </div>
 
           {/* Right Column - Visual */}

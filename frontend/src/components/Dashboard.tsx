@@ -508,7 +508,7 @@ const Dashboard: React.FC = () => {
           }}
         >
           <div 
-            className={`bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden transform transition-all duration-300 ${
+            className={`bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[85vh] overflow-hidden transform transition-all duration-300 ${
               isModalClosing || isModalEntering
                 ? 'scale-95 opacity-0 translate-y-4' 
                 : 'scale-100 opacity-100 translate-y-0'
@@ -524,7 +524,7 @@ const Dashboard: React.FC = () => {
               </button>
             </div>
             
-            <div className="p-6 space-y-6">
+            <div className="p-4 space-y-4">
               <div>
                 <label htmlFor="note-title" className="block text-sm font-medium text-gray-700 mb-2">
                   Title
@@ -535,7 +535,7 @@ const Dashboard: React.FC = () => {
                   value={newNoteForm.title}
                   onChange={(e) => setNewNoteForm(prev => ({ ...prev, title: e.target.value }))}
                   placeholder="Enter note title..."
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-lg transition-all duration-200 focus:scale-[1.02]"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
                 />
               </div>
               
@@ -548,23 +548,23 @@ const Dashboard: React.FC = () => {
                   value={newNoteForm.description}
                   onChange={(e) => setNewNoteForm(prev => ({ ...prev, description: e.target.value }))}
                   placeholder="Write your note content here..."
-                  rows={8}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none transition-all duration-200 focus:scale-[1.02]"
+                  rows={5}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none transition-all duration-200"
                 />
               </div>
             </div>
             
-            <div className="flex items-center justify-end gap-4 p-6 border-t border-gray-200 bg-gradient-to-r from-gray-50 to-gray-100">
+            <div className="flex items-center justify-end gap-3 p-4 border-t border-gray-200 bg-gray-50">
               <button
                 onClick={closeModal}
-                className="px-6 py-3 text-gray-700 hover:text-gray-900 hover:bg-white rounded-lg transition-all duration-200 font-medium transform hover:scale-105 hover:shadow-md"
+                className="px-4 py-2 text-gray-700 hover:text-gray-900 hover:bg-white rounded-lg transition-all duration-200 font-medium"
               >
                 Cancel
               </button>
               <button
                 onClick={createNote}
                 disabled={isCreatingNote || !newNoteForm.title.trim() || !newNoteForm.description.trim()}
-                className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 hover:shadow-lg disabled:transform-none"
+                className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed text-white px-6 py-2 rounded-lg font-medium transition-all duration-200"
               >
                 {isCreatingNote ? (
                   <>
@@ -592,7 +592,7 @@ const Dashboard: React.FC = () => {
           }}
         >
           <div 
-            className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden transform transition-all duration-300 scale-100 opacity-100 translate-y-0"
+            className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[85vh] overflow-hidden transform transition-all duration-300 scale-100 opacity-100 translate-y-0"
           >
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
               <h2 className="text-2xl font-bold text-gray-900">Edit Note</h2>
@@ -604,7 +604,7 @@ const Dashboard: React.FC = () => {
               </button>
             </div>
             
-            <div className="p-6 space-y-6">
+            <div className="p-4 space-y-4">
               <div>
                 <label htmlFor="edit-note-title" className="block text-sm font-medium text-gray-700 mb-2">
                   Title
@@ -615,7 +615,7 @@ const Dashboard: React.FC = () => {
                   value={editForm.title}
                   onChange={(e) => setEditForm(prev => ({ ...prev, title: e.target.value }))}
                   placeholder="Enter note title..."
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-lg transition-all duration-200 focus:scale-[1.02]"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
                 />
               </div>
               
@@ -628,23 +628,23 @@ const Dashboard: React.FC = () => {
                   value={editForm.description}
                   onChange={(e) => setEditForm(prev => ({ ...prev, description: e.target.value }))}
                   placeholder="Write your note content here..."
-                  rows={8}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none transition-all duration-200 focus:scale-[1.02]"
+                  rows={5}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none transition-all duration-200"
                 />
               </div>
             </div>
             
-            <div className="flex items-center justify-end gap-4 p-6 border-t border-gray-200 bg-gradient-to-r from-gray-50 to-gray-100">
+            <div className="flex items-center justify-end gap-3 p-4 border-t border-gray-200 bg-gray-50">
               <button
                 onClick={closeEditModal}
-                className="px-6 py-3 text-gray-700 hover:text-gray-900 hover:bg-white rounded-lg transition-all duration-200 font-medium transform hover:scale-105 hover:shadow-md"
+                className="px-4 py-2 text-gray-700 hover:text-gray-900 hover:bg-white rounded-lg transition-all duration-200 font-medium"
               >
                 Cancel
               </button>
               <button
                 onClick={updateNote}
                 disabled={isUpdatingNote || !editForm.title.trim() || !editForm.description.trim()}
-                className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 hover:shadow-lg disabled:transform-none"
+                className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed text-white px-6 py-2 rounded-lg font-medium transition-all duration-200"
               >
                 {isUpdatingNote ? (
                   <>
