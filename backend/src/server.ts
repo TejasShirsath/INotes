@@ -15,8 +15,10 @@ const server = express();
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
 server.use(cors({ 
-  origin: ['http://localhost:5173', 'http://localhost:3000'], // Add frontend URLs
-  credentials: true 
+  origin: ['http://localhost:5173', 'http://localhost:3000'], 
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 server.use(helmet());
 server.use(httpLogger('dev'));
@@ -26,6 +28,12 @@ const baseUrl = process.env.BASE_API_URL || '/api';
 server.get(baseUrl, (_, res) => {
   return res.json({ success: true, message: 'The server is up' });
 });
+
+// Test endpoint without authentication
+server.get(baseUrl + '/test', (_, res) => {
+  return res.json({ success: true, message: 'Backend is working!', timestamp: new Date() });
+});
+
 server.use(baseUrl + '/auth0', auth0Routes);
 server.use(baseUrl, usersRoutes);
 server.use(baseUrl, notesRoutes);

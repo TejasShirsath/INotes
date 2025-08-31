@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { LogOut, Plus, Search, Filter, Edit3, Trash2 } from 'lucide-react';
-import { authAPI, notesAPI } from '../services/api';
+import { notesAPI } from '../services/api';
 
 interface Note {
   _id: string;
@@ -12,7 +12,7 @@ interface Note {
 }
 
 const Dashboard: React.FC = () => {
-  const { user, logout, isLoading, getAccessTokenSilently } = useAuth0();
+  const { user, logout, isLoading } = useAuth0();
   const [notes, setNotes] = useState<Note[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoadingNotes, setIsLoadingNotes] = useState(false);
@@ -27,19 +27,38 @@ const Dashboard: React.FC = () => {
 
   const fetchUserProfile = async () => {
     try {
-      const token = await getAccessTokenSilently({
-        authorizationParams: {
-          audience: import.meta.env.VITE_AUTH0_AUDIENCE,
+      console.log('🔄 Creating user profile from Auth0 user data...');
+      console.log('👤 User object:', user);
+      
+      // Instead of getting a token, use the user data directly from Auth0
+      if (user) {
+        const userData = {
+          auth0Id: user.sub,
+          email: user.email,
+          name: user.name || user.nickname,
+          picture: user.picture
+        };
+        
+        console.log('� Sending user data to backend:', userData);
+        
+        // Send user data directly to backend
+        const response = await fetch('http://localhost:8000/api/auth0/profile', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(userData)
+        });
+        
+        if (response.ok) {
+          const result = await response.json();
+          console.log('✅ User profile created/updated:', result);
+        } else {
+          console.error('❌ Failed to create user profile:', response.status);
         }
-      });
-      
-      // Store token for API calls
-      localStorage.setItem('auth0_token', token);
-      
-      // Create or get user profile
-      await authAPI.getOrCreateProfile(token);
+      }
     } catch (error) {
-      console.error('Error fetching user profile:', error);
+      console.error('❌ Error creating user profile:', error);
     }
   };
 
@@ -49,9 +68,22 @@ const Dashboard: React.FC = () => {
       const response = await notesAPI.getNotes();
       setNotes(response.data.notes || []);
     } catch (error) {
-      console.error('Error fetching notes:', error);
+      console.error('❌ Error fetching notes:', error);
     } finally {
       setIsLoadingNotes(false);
+    }
+  };
+
+  const testBackendConnection = async () => {
+    try {
+      console.log('🧪 Testing backend connection...');
+      const response = await fetch('http://localhost:8000/api/test');
+      const data = await response.json();
+      console.log('✅ Backend test successful:', data);
+      alert('Backend connection successful!');
+    } catch (error) {
+      console.error('❌ Backend connection failed:', error);
+      alert('Backend connection failed!');
     }
   };
 
@@ -143,6 +175,13 @@ const Dashboard: React.FC = () => {
           <button className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
             <Plus className="w-5 h-5" />
             New Note
+          </button>
+          
+          <button 
+            onClick={testBackendConnection}
+            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+          >
+            🧪 Test Backend
           </button>
           
           <div className="flex flex-1 gap-4">
