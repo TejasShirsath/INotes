@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Users2 } from "lucide-react";
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -7,7 +8,7 @@ const Header: React.FC = () => {
     <header className="fixed top-0 left-0 right-0 z-50 p-4">
       <div className="max-w-7xl mx-auto">
         <div className="bg-white/95 backdrop-blur-md rounded-2xl border border-gray-200/50 shadow-lg">
-          <div className="py-1 px-6 sm:px-8 lg:px-12">
+          <div className="py-0.5 px-6 sm:px-8 lg:px-12">
             <div className="flex items-center justify-between h-16">
               {/* Logo */}
               <div className="flex items-center">
@@ -42,11 +43,9 @@ const Header: React.FC = () => {
 
               {/* CTA Buttons */}
               <div className="hidden md:flex items-center space-x-4">
-                <button className="text-gray-700 hover:text-indigo-600 px-4 py-2 text-lg font-medium transition-colors duration-200">
-                  Sign In
-                </button>
-                <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-xl text-lg font-medium transition-all duration-200 shadow-md hover:shadow-lg">
-                  Get Started
+                <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-xl text-lg font-medium transition-all duration-200 shadow-md hover:shadow-lg flex items-center gap-2">
+                  <Users2 className="w-4 h-4" />
+                  <span>Sign In</span>
                 </button>
               </div>
 
