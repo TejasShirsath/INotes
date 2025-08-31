@@ -28,6 +28,7 @@ interface NewNoteForm {
 
 const Dashboard: React.FC = () => {
   const { user, logout, isLoading } = useAuth0();
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const [notes, setNotes] = useState<Note[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoadingNotes, setIsLoadingNotes] = useState(false);
@@ -67,7 +68,7 @@ const Dashboard: React.FC = () => {
         console.log('� Sending user data to backend:', userData);
         
         // Send user data directly to backend
-        const response = await fetch('http://localhost:8000/api/auth0/profile', {
+        const response = await fetch(`${API_BASE_URL}/auth0/profile`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -93,7 +94,7 @@ const Dashboard: React.FC = () => {
   const fetchNotesWithUserId = async (userId: string) => {
     try {
       setIsLoadingNotes(true);
-      const response = await fetch(`http://localhost:8000/api/notes/user/${encodeURIComponent(userId)}`, {
+      const response = await fetch(`${API_BASE_URL}/notes/user/${encodeURIComponent(userId)}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -127,7 +128,7 @@ const Dashboard: React.FC = () => {
 
     try {
       setIsCreatingNote(true);
-      const response = await fetch(`http://localhost:8000/api/notes/user/${encodeURIComponent(user.sub)}/create`, {
+      const response = await fetch(`${API_BASE_URL}/notes/user/${encodeURIComponent(user.sub)}/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -170,7 +171,7 @@ const Dashboard: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8000/api/notes/user/${encodeURIComponent(user.sub)}/${noteId}/delete`, {
+      const response = await fetch(`${API_BASE_URL}/notes/user/${encodeURIComponent(user.sub)}/${noteId}/delete`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -235,7 +236,7 @@ const Dashboard: React.FC = () => {
 
     try {
       setIsUpdatingNote(true);
-      const response = await fetch(`http://localhost:8000/api/notes/user/${encodeURIComponent(user.sub)}/${editingNote._id}/update`, {
+      const response = await fetch(`${API_BASE_URL}/notes/user/${encodeURIComponent(user.sub)}/${editingNote._id}/update`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
