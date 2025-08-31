@@ -6,6 +6,7 @@ import {
   getNotesByAuth0Id,
   createNoteByAuth0Id,
   deleteNoteByAuth0Id,
+  updateNoteByAuth0Id,
   deleteNoteById,
   updateNoteById,
 } from '../controllers/notes';
@@ -17,6 +18,7 @@ router.route('/notes').post(authenticate, createNote).get(authenticate, getNotes
 router.route('/notes/user/:auth0Id').get(getNotesByAuth0Id); // Public route for Auth0 users
 router.route('/notes/user/:auth0Id/create').post(createNoteByAuth0Id); // Public route for creating notes
 router.route('/notes/user/:auth0Id/:noteId/delete').delete(deleteNoteByAuth0Id); // Public route for deleting notes
+router.route('/notes/user/:auth0Id/:noteId/update').put(updateNoteByAuth0Id); // Public route for updating notes
 router
   .route('/notes/:id')
   .get(authenticate, validateId('id'), getNoteById)

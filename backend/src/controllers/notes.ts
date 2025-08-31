@@ -315,3 +315,56 @@ export const deleteNoteByAuth0Id = catchAsync(
     });
   }
 );
+
+/**
+ * @route   /notes/user/:auth0Id/:noteId/update
+ * @method  PUT
+ * @access  Public (for now, since we're bypassing auth middleware)
+ * @desc    Update a note for a specific Auth0 user.
+ */
+export const updateNoteByAuth0Id = catchAsync(
+  async (req: Request<{ auth0Id?: string; noteId?: string }, {}, { title?: string; description?: string }, {}>, res, next) => {
+    const { auth0Id, noteId } = req.params;
+    const { title, description } = req.body;
+    
+    if (!auth0Id || !noteId) {
+      throw new CaptureError('Auth0 ID and Note ID are required', httpStatus.BAD_REQUEST);
+    }
+
+    // Validate note data
+    const { data: noteData, error } = await validateUpdateNoteData({ title, description });
+    if (error) {
+      return res.status(httpStatus.BAD_REQUEST).json({
+        success: false,
+        statusCode: httpStatus.BAD_REQUEST,
+        message: error.message,
+        error,
+      });
+    }
+
+    // Find the user by Auth0 ID
+    const user = await User.findOne({ auth0Id: decodeURIComponent(auth0Id) });
+    
+    if (!user) {
+      throw new CaptureError('User not found', httpStatus.NOT_FOUND);
+    }
+
+    // Find and update the note
+    const updateNote = await Note.findOneAndUpdate(
+      { _id: noteId, user: user._id },
+      { $set: { ...noteData } },
+      { new: true }
+    );
+
+    if (!updateNote) {
+      throw new CaptureError('Note does not exist', httpStatus.NOT_FOUND);
+    }
+
+    return res.json({
+      success: true,
+      statusCode: httpStatus.OK,
+      message: 'Note has been updated!',
+      note: updateNote,
+    });
+  }
+);

@@ -7,12 +7,9 @@ import {
   Filter, 
   Edit3, 
   Trash2, 
-  Calendar,
   Clock,
   X,
   Save,
-  Tag,
-  Star,
   BookOpen
 } from 'lucide-react';
 
@@ -40,6 +37,10 @@ const Dashboard: React.FC = () => {
   const [filterOption, setFilterOption] = useState('all');
   const [isModalClosing, setIsModalClosing] = useState(false);
   const [isModalEntering, setIsModalEntering] = useState(false);
+  const [editingNote, setEditingNote] = useState<Note | null>(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editForm, setEditForm] = useState<NewNoteForm>({ title: '', description: '' });
+  const [isUpdatingNote, setIsUpdatingNote] = useState(false);
 
   const handleLogout = () => {
     logout({ 
@@ -209,6 +210,62 @@ const Dashboard: React.FC = () => {
     }, 50);
   };
 
+  const openEditModal = (note: Note) => {
+    setEditingNote(note);
+    setEditForm({ title: note.title, description: note.description });
+    setShowEditModal(true);
+  };
+
+  const closeEditModal = () => {
+    setShowEditModal(false);
+    setEditingNote(null);
+    setEditForm({ title: '', description: '' });
+  };
+
+  const updateNote = async () => {
+    if (!editForm.title.trim() || !editForm.description.trim()) {
+      alert('Please fill in both title and description');
+      return;
+    }
+
+    if (!user?.sub || !editingNote) {
+      alert('User authentication error. Please try logging in again.');
+      return;
+    }
+
+    try {
+      setIsUpdatingNote(true);
+      const response = await fetch(`http://localhost:8000/api/notes/user/${encodeURIComponent(user.sub)}/${editingNote._id}/update`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: editForm.title,
+          description: editForm.description
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('✅ Note updated successfully:', data);
+        closeEditModal();
+        
+        // Refresh notes
+        fetchNotesWithUserId(user.sub);
+      } else {
+        const errorData = await response.json();
+        console.error('❌ Failed to update note:', response.status, errorData);
+        alert(`Failed to update note: ${errorData.message || 'Please try again.'}`);
+      }
+    } catch (error) {
+      console.error('❌ Error updating note:', error);
+      alert('Error updating note. Please try again.');
+    } finally {
+      setIsUpdatingNote(false);
+    }
+  };
+
   useEffect(() => {
     if (user) {
       fetchUserProfile();
@@ -376,6 +433,7 @@ const Dashboard: React.FC = () => {
                   </h3>
                   <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button 
+                      onClick={() => openEditModal(note)}
                       className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
                       title="Edit note"
                     >
@@ -516,6 +574,86 @@ const Dashboard: React.FC = () => {
                   <>
                     <Save className="w-4 h-4" />
                     Create Note
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Note Modal */}
+      {showEditModal && (
+        <div 
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 z-50 transition-all duration-300"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) closeEditModal();
+          }}
+        >
+          <div 
+            className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden transform transition-all duration-300 scale-100 opacity-100 translate-y-0"
+          >
+            <div className="flex items-center justify-between p-6 border-b border-gray-200">
+              <h2 className="text-2xl font-bold text-gray-900">Edit Note</h2>
+              <button
+                onClick={closeEditModal}
+                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-all duration-200 hover:scale-110"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            
+            <div className="p-6 space-y-6">
+              <div>
+                <label htmlFor="edit-note-title" className="block text-sm font-medium text-gray-700 mb-2">
+                  Title
+                </label>
+                <input
+                  id="edit-note-title"
+                  type="text"
+                  value={editForm.title}
+                  onChange={(e) => setEditForm(prev => ({ ...prev, title: e.target.value }))}
+                  placeholder="Enter note title..."
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-lg transition-all duration-200 focus:scale-[1.02]"
+                />
+              </div>
+              
+              <div>
+                <label htmlFor="edit-note-description" className="block text-sm font-medium text-gray-700 mb-2">
+                  Description
+                </label>
+                <textarea
+                  id="edit-note-description"
+                  value={editForm.description}
+                  onChange={(e) => setEditForm(prev => ({ ...prev, description: e.target.value }))}
+                  placeholder="Write your note content here..."
+                  rows={8}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none transition-all duration-200 focus:scale-[1.02]"
+                />
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-end gap-4 p-6 border-t border-gray-200 bg-gradient-to-r from-gray-50 to-gray-100">
+              <button
+                onClick={closeEditModal}
+                className="px-6 py-3 text-gray-700 hover:text-gray-900 hover:bg-white rounded-lg transition-all duration-200 font-medium transform hover:scale-105 hover:shadow-md"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={updateNote}
+                disabled={isUpdatingNote || !editForm.title.trim() || !editForm.description.trim()}
+                className="flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed text-white px-8 py-3 rounded-lg font-medium transition-all duration-200 transform hover:scale-105 hover:shadow-lg disabled:transform-none"
+              >
+                {isUpdatingNote ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    Updating...
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-4 h-4" />
+                    Update Note
                   </>
                 )}
               </button>
