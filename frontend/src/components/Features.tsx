@@ -1,6 +1,10 @@
 import React from 'react';
 
-const Features: React.FC = () => {
+interface FeaturesProps {
+  onLoginClick: () => void;
+}
+
+const Features: React.FC<FeaturesProps> = ({ onLoginClick }) => {
   const features = [
     {
       icon: (
@@ -97,7 +101,10 @@ const Features: React.FC = () => {
 
         {/* Call to Action */}
         <div className="text-center mt-16">
-          <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+          <button 
+            onClick={onLoginClick}
+            className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+          >
             Start Using iNotes Today
           </button>
         </div>

@@ -16,7 +16,7 @@ const Landing: React.FC<LandingProps> = ({ onLoginClick }) => {
     <div className="min-h-screen">
       <Header onLoginClick={onLoginClick} />
       <Hero onLoginClick={onLoginClick} />
-      <Features />
+      <Features onLoginClick={onLoginClick} />
       <Testimonials />
       <CTA onLoginClick={onLoginClick} />
       <Footer />
