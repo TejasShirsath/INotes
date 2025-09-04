@@ -90,29 +90,15 @@ const LoginPage: React.FC<LoginPageProps> = ({ onBack }) => {
 
           {/* Login Options */}
           <div className="space-y-4">
-            {/* Email/OTP Option */}
-            <button
-              onClick={() => setLoginMethod('email')}
-              className="w-full p-4 border-2 border-gray-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 flex items-center gap-3"
-            >
-              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                <Mail className="w-5 h-5 text-blue-600" />
-              </div>
-              <div className="text-left">
-                <div className="font-semibold text-gray-900">Continue with Email</div>
-                <div className="text-sm text-gray-500">Sign in with email and OTP</div>
-              </div>
-            </button>
-
-            {/* Google Option - Direct redirect */}
+            {/* Google Option - Highlighted and positioned first */}
             <button
               onClick={handleGoogleLogin}
               disabled={isLoading}
-              className="w-full p-4 border-2 border-gray-200 rounded-xl hover:border-red-300 hover:bg-red-50 transition-all duration-200 flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full p-5 border-2 border-blue-500 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl hover:from-blue-600 hover:to-blue-700 hover:shadow-lg hover:scale-[1.02] transition-all duration-200 flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed shadow-md"
             >
-              <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center border">
+              <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
                 {isLoading ? (
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-red-500"></div>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500"></div>
                 ) : (
                   <svg className="w-5 h-5" viewBox="0 0 24 24">
                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -122,11 +108,25 @@ const LoginPage: React.FC<LoginPageProps> = ({ onBack }) => {
                   </svg>
                 )}
               </div>
-              <div className="text-left">
-                <div className="font-semibold text-gray-900">Continue with Google</div>
-                <div className="text-sm text-gray-500">
-                  {isLoading ? 'Redirecting to Google...' : 'Sign in with your Google account'}
+              <div className="text-left flex-1">
+                <div className="font-bold text-white">Continue with Google</div>
+                <div className="text-sm text-blue-100">
+                  {isLoading ? 'Redirecting to Google...' : 'Recommended • Fast and secure'}
                 </div>
+              </div>
+            </button>
+
+            {/* Email/OTP Option - Secondary option */}
+            <button
+              onClick={() => setLoginMethod('email')}
+              className="w-full p-4 border-2 border-gray-200 rounded-xl hover:border-gray-300 hover:bg-gray-50 transition-all duration-200 flex items-center gap-3"
+            >
+              <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+                <Mail className="w-5 h-5 text-gray-600" />
+              </div>
+              <div className="text-left">
+                <div className="font-semibold text-gray-700">Continue with Email</div>
+                <div className="text-sm text-gray-500">Sign in with email and OTP</div>
               </div>
             </button>
           </div>
